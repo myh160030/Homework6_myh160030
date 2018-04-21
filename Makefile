@@ -4,27 +4,26 @@
 
 # Flags for the C implicit rules
 CXX = g++
-CXXFLAGS = -Wall -I /scratch/perkins/include
-
+CPPFLAGS = -Wall -I/scratch/perkins/include
 LDFLAGS = -L /scratch/perkins/lib
-LDLIBS  = -lcdk
+LDLIBS  = -lcdk -lcurses
 
 PROJECTNAME = CS3377.501.Program6_myh160030
 
-EXECFILE = cs3377dirmond
+EXECFILE = cdkexample
 
 # Makes the executable file:
 all: $(EXECFILE)
 
-OBJS = cs3377dirmond.o parseCmdLine.o parseConfigFile.o inotifyFunctions.o loggingFunctions.o signalHandler.o
+OBJS = cdkexample.o
 
 # Removes the executable file and its objects:
 clean:
-	rm -f $(OBJS) *~ \#*
+	rm -f $(EXECFILE) $(OBJS) *~ \#*
 
 # cs3377dirmond is the target
 $(EXECFILE):	$(OBJS)
-	$(CXX) -static -o $@ $(OBJS) $(LDFLAGS) $(LDLIBS)
+	$(CXX) -o $@ $(OBJS) $(LDFLAGS) $(LDLIBS)
 
 # backup target
 backup:
