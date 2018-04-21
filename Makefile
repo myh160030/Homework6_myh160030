@@ -10,12 +10,12 @@ LDLIBS  = -lcdk -lcurses
 
 PROJECTNAME = CS3377.501.Program6_myh160030
 
-EXECFILE = cdkexample
+EXECFILE = Program6_myh160030
 
 # Makes the executable file:
 all: $(EXECFILE)
 
-OBJS = cdkexample.o
+OBJS = Program6_myh160030.o
 
 # Removes the executable file and its objects:
 clean:
