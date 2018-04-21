@@ -4,10 +4,7 @@
 
 #include <iostream>
 #include <fstream>
-#include <iomanip>
 #include <stdint.h>
-#include <string>
-#include <sstream>
 #include "cdk.h"
 
 #define MATRIX_WIDTH 3
@@ -25,6 +22,16 @@ class BinaryFileHeader
  uint32_t magicNumber;		/* Should be 0xFEEDFACE */
  uint32_t versionNumber;
  uint64_t numRecords;
+};
+
+const int maxRecordStringLength = 25;
+
+class BinaryFileRecord
+{
+ public:
+
+ uint8_t strLength;
+ char 	 stringBuffer[maxRecordStringLength];
 };
 
 int main()
@@ -94,12 +101,25 @@ int main()
 
   drawCDKMatrix(myMatrix, true);    /* required  */
 
-  binaryInputFile.close();
+  BinaryFileRecord *myRecords = new BinaryFileRecord();
+
+  for (int i = 0; i < (int)myHeader->numRecords; i++)
+     {
+	binaryInputFile.read((char *) myRecords, sizeof(BinaryFileRecord));
+
+	sprintf(text, "strlen: %d", myRecords->strLength);
+	setCDKMatrixCell(myMatrix, i + 2, 1, text);
+
+	setCDKMatrixCell(myMatrix, i + 2, 2, myRecords->stringBuffer);
+     }
+
+  drawCDKMatrix(myMatrix, true);    /* required */   
 
   /* So we can see results, pause until a key is pressed. */
   unsigned char x;
   cin >> x;
 
   // Cleanup screen
+  binaryInputFile.close();
   endCDK();
 }
